@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARKETYPE — Modern Architecture Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;600;700;900&display=swap"
+        rel="stylesheet">
+    <style>
+        /* ========================================================= */
+        /* RESET & BASE                                             */
+        /* ========================================================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0b0d10;
+            color: #e7e9ee;
+            line-height: 1.6;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        button {
+            font-family: inherit;
+            cursor: pointer;
+            border: none;
+        }
+
+        :root {
+            --bg-main: #0b0d10;
+            --bg-soft: #11141a;
+            --bg-card: #151924;
+            --accent: #c7a86a;
+            --accent-soft: #e0c78a;
+            --text-main: #e7e9ee;
+            --text-soft: #a9afc3;
+            --border: #1f2433;
+            --success: #4caf50;
+            --danger: #ff5c5c;
+            --radius-sm: 6px;
+            --radius-md: 12px;
+            --radius-lg: 22px;
+            --shadow-soft: 0 10px 30px rgba(0, 0, 0, .35);
+        }
+
+        /* ========================================================= */
+        /* UTILITIES                                                */
+        /* ========================================================= */
+        .container {
+            width: 100%;
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .grid {
+            display: grid;
+            gap: 24px;
+        }
+
+        .grid-2 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .grid-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .grid-4 {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-1 {
+            margin-top: 8px;
+        }
+
+        .mt-2 {
+            margin-top: 16px;
+        }
+
+        .mt-3 {
+            margin-top: 24px;
+        }
+
+        .mt-4 {
+            margin-top: 40px;
+        }
+
+        .mb-1 {
+            margin-bottom: 8px;
+        }
+
+        .mb-2 {
+            margin-bottom: 16px;
+        }
+
+        .mb-3 {
+            margin-bottom: 24px;
+        }
+
+        .mb-4 {
+            margin-bottom: 40px;
+        }
+
+        .btn {
+            padding: 14px 22px;
+            border-radius: var(--radius-md);
+            background: var(--accent);
+            color: #0b0d10;
+            font-weight: 600;
+            transition: .25s;
+        }
+
+        .btn:hover {
+            background: var(--accent-soft);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+        }
+
+        .btn-outline:hover {
+            background: var(--accent);
+            color: #0b0d10;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: #1a1f2d;
+            color: var(--accent);
+            font-size: 12px;
+        }
+
+        .section {
+            padding: 96px 0;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 42px;
+            margin-bottom: 16px;
+        }
+
+        .section-subtitle {
+            color: var(--text-soft);
+            max-width: 720px;
+        }
+
+        /* ========================================================= */
+        /* NAVBAR                                                   */
+        /* ========================================================= */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 999;
+            background: rgba(11, 13, 16, .75);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .navbar-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 76px;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 24px;
+            letter-spacing: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 28px;
+        }
+
+        .nav-links a {
+            color: var(--text-soft);
+            font-weight: 500;
+        }
+
+        .nav-links a.active,
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        /* ========================================================= */
+        /* HERO                                                     */
+        /* ========================================================= */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(180deg, rgba(11, 13, 16, .85), rgba(11, 13, 16, .95)), url('https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+        }
+
+        .hero-content {
+            max-width: 720px;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 64px;
+            line-height: 1.15;
+        }
+
+        .hero p {
+            color: var(--text-soft);
+            font-size: 18px;
+            margin-top: 20px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            margin-top: 32px;
+        }
+
+        /* ========================================================= */
+        /* STATS                                                    */
+        /* ========================================================= */
+        .stats {
+            background: var(--bg-soft);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            padding: 32px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .stat-card h3 {
+            font-size: 36px;
+            color: var(--accent);
+        }
+
+        .stat-card p {
+            color: var(--text-soft);
+        }
+
+        /* ========================================================= */
+        /* SERVICES                                                 */
+        /* ========================================================= */
+        .service-card {
+            background: var(--bg-card);
+            padding: 36px;
+            border-radius: var(--radius-lg);
+            transition: .3s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-6px);
+        }
+
+        .service-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            background: #1f2433;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+
+        /* ========================================================= */
+        /* PROJECTS                                                 */
+        /* ========================================================= */
+        .project-filter {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 32px;
+        }
+
+        .project-filter button {
+            background: #1a1f2d;
+            color: var(--text-soft);
+            padding: 10px 16px;
+            border-radius: 999px;
+        }
+
+        .project-filter button.active {
+            background: var(--accent);
+            color: #0b0d10;
+        }
+
+        .project-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+        }
+
+        .project-card img {
+            height: 220px;
+            object-fit: cover;
+            width: 100%;
+        }
+
+        .project-info {
+            padding: 20px;
+        }
+
+        .project-info h4 {
+            margin-bottom: 8px;
+        }
+
+        .project-info p {
+            color: var(--text-soft);
+            font-size: 14px;
+        }
+
+        /* ========================================================= */
+        /* PROCESS                                                  */
+        /* ========================================================= */
+        .timeline {
+            position: relative;
+            padding-left: 64px;
+        }
+
+        .timeline-item {
+            padding-left: 24px;
+            /* jarak antara titik & teks */
+        }
+
+        .timeline-item h4 {
+            margin-bottom: 6px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 12px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border);
+        }
+
+        .timeline-item {
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2px;
+            top: 6px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--accent);
+        }
+
+        /* ========================================================= */
+        /* TESTIMONIALS                                             */
+        /* ========================================================= */
+        .testimonial {
+            background: var(--bg-card);
+            padding: 32px;
+            border-radius: var(--radius-lg);
+        }
+
+        .testimonial p {
+            color: var(--text-soft);
+        }
+
+        /* ========================================================= */
+        /* CONTACT                                                  */
+        /* ========================================================= */
+        .contact-form {
+            background: var(--bg-card);
+            padding: 40px;
+            border-radius: var(--radius-lg);
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 14px;
+            color: var(--text-soft);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px;
+            border-radius: var(--radius-md);
+            background: #0f1320;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+        }
+
+        .form-group textarea {
+            resize: none;
+            height: 120px;
+        }
+
+        .form-message {
+            margin-top: 12px;
+            font-size: 14px;
+        }
+
+        /* ========================================================= */
+        /* FOOTER                                                   */
+        /* ========================================================= */
+        footer {
+            padding: 60px 0;
+            border-top: 1px solid var(--border);
+            background: #0a0c12;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 24px;
+        }
+
+        .footer-col h5 {
+            margin-bottom: 12px;
+        }
+
+        .footer-col a {
+            display: block;
+            color: var(--text-soft);
+            margin-bottom: 8px;
+        }
+
+        .footer-col a:hover {
+            color: var(--accent);
+        }
+        iframe{
+            width: 550px;
+            height: 400px;
+        }
+
+        /* ========================================================= */
+        /* RESPONSIVE                                               */
+        /* ========================================================= */
+        @media(max-width:900px) {
+
+            .grid-2,
+            .grid-3,
+            .grid-4 {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 44px;
+            }
+
+            .navbar-inner {
+                gap: 12px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ======================================================= -->
+    <!-- NAVBAR                                                  -->
+    <!-- ======================================================= -->
+    <nav class="navbar">
+        <div class="container navbar-inner">
+            <div class="logo">ARKETYPE</div>
+            <div class="nav-links">
+                <a href="#home" class="active">Home</a>
+                <a href="#services">Services</a>
+                <a href="#projects">Projects</a>
+                <a href="#process">Process</a>
+                <a href="#contact">Contact</a>
+            </div>
+            <div class="nav-actions">
+                <button class="btn-outline btn" id="themeToggle">Dark</button>
+                <a href="#contact" class="btn">Consultation</a>
+            </div>
+        </div>
+    </nav>
+    <!-- ======================================================= -->
+    <!-- HERO                                                    -->
+    <!-- ======================================================= -->
+    <section class="hero section" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <span class="tag">Modern & Timeless</span>
+                <h1 class="mt-3">Designing Architecture That Defines The Future</h1>
+                <p>ARKETYPE is a modern architecture studio focused on sustainable, functional, and elegant spaces that
+                    elevate human experience.</p>
+                <div class="hero-buttons">
+                    <a href="#projects" class="btn">View Projects</a>
+                    <button class="btn-outline btn" id="scrollServices">Our Services</button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ======================================================= -->
+    <!-- STATS                                                   -->
+    <!-- ======================================================= -->
+    <section class="stats section">
+        <div class="container grid grid-4">
+            <div class="stat-card">
+                <h3 data-count="120">0</h3>
+                <p>Completed Projects</p>
+            </div>
+            <div class="stat-card">
+                <h3 data-count="15">0</h3>
+                <p>Years Experience</p>
+            </div>
+            <div class="stat-card">
+                <h3 data-count="40">0</h3>
+                <p>Awards</p>
+            </div>
+            <div class="stat-card">
+                <h3 data-count="98">0</h3>
+                <p>Client Satisfaction (%)</p>
+            </div>
+        </div>
+    </section>
+    <!-- ======================================================= -->
+    <!-- SERVICES                                                -->
+    <!-- ======================================================= -->
+    <section class="section" id="services">
+        <div class="container">
+            <h2 class="section-title">Our Services</h2>
+            <p class="section-subtitle mb-4">We deliver comprehensive architectural solutions with a focus on
+                innovation, sustainability, and refined aesthetics.</p>
+            <div class="grid grid-3">
+                <div class="service-card">
+                    <div class="service-icon">A</div>
+                    <h3>Architectural Design</h3>
+                    <p>Conceptual to detailed design for residential, commercial, and cultural buildings.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">I</div>
+                    <h3>Interior Design</h3>
+                    <p>Functional interiors with modern materials, lighting, and spatial harmony.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">U</div>
+                    <h3>Urban Planning</h3>
+                    <p>Large scale planning with sustainable infrastructure and human-centered design.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ======================================================= -->
+    <!-- PROJECTS                                                -->
+    <!-- ======================================================= -->
+    <section class="section" id="projects">
+        <div class="container">
+            <h2 class="section-title">Selected Projects</h2>
+            <p class="section-subtitle mb-4">A curated portfolio representing our architectural philosophy and
+                craftsmanship.</p>
+            <div class="project-filter">
+                <button class="active" data-filter="all">All</button>
+                <button data-filter="residential">Residential</button>
+                <button data-filter="commercial">Commercial</button>
+                <button data-filter="cultural">Cultural</button>
+            </div>
+            <div class="grid grid-3" id="projectGrid">
+                <div class="project-card" data-category="residential">
+                    <img src="https://images.unsplash.com/photo-1523217582562-09d0def993a6?auto=format&fit=crop&w=800&q=80"
+                        alt="">
+                    <div class="project-info">
+                        <h4>Minimalist Villa</h4>
+                        <p>Residential Architecture</p>
+                    </div>
+                </div>
+                <div class="project-card" data-category="commercial">
+                    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80"
+                        alt="">
+                    <div class="project-info">
+                        <h4>Corporate Tower</h4>
+                        <p>Commercial Architecture</p>
+                    </div>
+                </div>
+                <div class="project-card" data-category="cultural">
+                    <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=800&q=80"
+                        alt="">
+                    <div class="project-info">
+                        <h4>Modern Art Museum</h4>
+                        <p>Cultural Architecture</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ======================================================= -->
+    <!-- PROCESS                                                 -->
+    <!-- ======================================================= -->
+    <section class="section" id="process">
+        <div class="container">
+            <h2 class="section-title">Our Process</h2>
+            <p class="section-subtitle mb-4">A structured workflow ensuring quality, transparency, and precision.</p>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h4>Concept & Research</h4>
+                    <p>Understanding context, culture, and client vision.</p>
+                </div>
+                <div class="timeline-item">
+                    <h4>Design Development</h4>
+                    <p>Refining forms, materials, and spatial relationships.</p>
+                </div>
+                <div class="timeline-item">
+                    <h4>Technical Documentation</h4>
+                    <p>Detailed drawings and construction specifications.</p>
+                </div>
+                <div class="timeline-item">
+                    <h4>Construction Supervision</h4>
+                    <p>Ensuring design integrity and execution quality.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ======================================================= -->
+    <!-- TESTIMONIALS                                            -->
+    <!-- ======================================================= -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Client Testimonials</h2>
+            <div class="grid grid-3 mt-4">
+                <div class="testimonial">
+                    <p>“ARKETYPE delivered an exceptional design that exceeded our expectations.”</p>
+                    <strong class="mt-2">— Private Client</strong>
+                </div>
+                <div class="testimonial">
+                    <p>“Professional, visionary, and highly detail-oriented architecture studio.”</p>
+                    <strong class="mt-2">— Developer</strong>
+                </div>
+                <div class="testimonial">
+                    <p>“Their modern approach created a landmark building for our city.”</p>
+                    <strong class="mt-2">— Cultural Institution</strong>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ======================================================= -->
+    <!-- CONTACT                                                 -->
+    <!-- ======================================================= -->
+    <section class="section" id="contact">
+        <div class="container grid grid-2">
+            <div>
+                <h2 class="section-title">Contact Us</h2>
+                <p class="section-subtitle">Discuss your project with our architectural experts.</p>
+                <iframe title="SMAK Santa Agnes Surabaya"
+                    src="https://www.google.com/maps?q=SMAK%20Santa%20Agnes%20Surabaya%20Jl%20Mendut&output=embed"
+                    loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+            <form class="contact-form" id="contactForm">
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" id="name" required>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label>Message</label>
+                    <textarea id="message" required></textarea>
+                </div>
+                <button type="submit" class="btn">Send Message</button>
+                <div class="form-message" id="formMessage"></div>
+            </form>
+        </div>
+    </section>
+    <!-- ======================================================= -->
+    <!-- FOOTER                                                  -->
+    <!-- ======================================================= -->
+    <footer>
+        <div class="container footer-grid">
+            <div class="footer-col">
+                <h5>ARKETYPE</h5>
+                <p class="section-subtitle">Modern Architecture Studio creating timeless spaces.</p>
+            </div>
+            <div class="footer-col">
+                <h5>Studio</h5>
+                <a href="#">About</a>
+                <a href="#">Team</a>
+                <a href="#">Careers</a>
+            </div>
+            <div class="footer-col">
+                <h5>Projects</h5>
+                <a href="#">Residential</a>
+                <a href="#">Commercial</a>
+                <a href="#">Cultural</a>
+            </div>
+            <div class="footer-col">
+                <h5>Contact</h5>
+                <a href="#">Email</a>
+                <a href="#">Instagram</a>
+                <a href="#">LinkedIn</a>
+            </div>
+        </div>
+    </footer>
+    <script>
+        // ==========================================================
+        // INTERACTIONS & FUNCTIONALITY
+        // ==========================================================
+        // Smooth scroll to services
+        const scrollBtn = document.getElementById('scrollServices');
+        if (scrollBtn) {
+            scrollBtn.addEventListener('click', () => {
+                document.getElementById('services').scrollIntoView({ behavior: 'smooth' });
+            });
+        }
+        // Stats counter animation
+        const counters = document.querySelectorAll('[data-count]');
+        const animateCounters = () => {
+            counters.forEach(counter => {
+                const target = +counter.getAttribute('data-count');
+                let current = 0;
+                const increment = Math.ceil(target / 80);
+                const update = () => {
+                    current += increment;
+                    if (current > target) current = target;
+                    counter.textContent = current;
+                    if (current < target) requestAnimationFrame(update);
+                };
+                update();
+            });
+        };
+        window.addEventListener('load', animateCounters);
+        // Project filtering
+        const filterButtons = document.querySelectorAll('.project-filter button');
+        const projectCards = document.querySelectorAll('.project-card');
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const filter = btn.getAttribute('data-filter');
+                projectCards.forEach(card => {
+                    if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+        // Contact form validation
+        const form = document.getElementById('contactForm');
+        const formMessage = document.getElementById('formMessage');
+        if (form) {
+            form.addEventListener('submit', e => {
+                e.preventDefault();
+                const name = document.getElementById('name').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const message = document.getElementById('message').value.trim();
+                if (name && email && message) {
+                    formMessage.style.color = 'var(--success)';
+                    formMessage.textContent = 'Message sent successfully. We will contact you soon.';
+                    form.reset();
+                } else {
+                    formMessage.style.color = 'var(--danger)';
+                    formMessage.textContent = 'Please fill all fields correctly.';
+                }
+            });
+        }
+        // Theme toggle (dark only visual switch placeholder)
+        const themeToggle = document.getElementById('themeToggle');
+        let dark = true;
+        if (themeToggle) {
+            themeToggle.addEventListener('click', () => {
+                dark = !dark;
+                themeToggle.textContent = dark ? 'Dark' : 'Dark';
+            });
+        }
+    </script>
+</body>
+
+</html>
